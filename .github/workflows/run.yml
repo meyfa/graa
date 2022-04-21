@@ -19,4 +19,7 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: npm run build
-      - run: npm start
+      # TODO enable this once it's safe
+      #- run: npm start
+      #  env:
+      #    GRAA_TOKEN: ${{ secrets.GRAA_TOKEN }}
