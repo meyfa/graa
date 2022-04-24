@@ -23,4 +23,4 @@ function prefixedLog (base: Log, prefix: string): Log {
 }
 
 export const withRepoScope = (log: Log, repo: RepoOfAuthenticatedUser): Log => prefixedLog(log, `${repo.full_name}:`)
-export const withAutomationScope = (log: Log, automationId: string): Log => prefixedLog(log, `${automationId}`)
+export const withAutomationScope = (log: Log, automationId: string): Log => prefixedLog(log, `${automationId}:`)

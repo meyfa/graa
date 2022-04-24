@@ -63,6 +63,7 @@ async function handleRepo (log: Log, repo: RepoOfAuthenticatedUser): Promise<voi
   for (const automationId of config.automations) {
     await runAutomation(log, repo, automationId)
   }
+  await runAutomation(log, repo, 'license-date')
 }
 
 async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automationId: string): Promise<void> {

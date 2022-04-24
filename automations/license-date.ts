@@ -1,9 +1,10 @@
 import { tryReadFileAsUtf8 } from '../lib/content.js'
 import { GraaOctokit, RepoOfAuthenticatedUser } from '../lib/types.js'
-import { createPrToUpdateFile } from '../lib/pr.js'
+import { createPrToUpdateFile, searchExistingPr } from '../lib/pr.js'
 import { Log } from '../lib/log.js'
 
 const LICENSE_PATH = 'LICENSE'
+const BRANCH_NAME = 'chore/license-copyright-year'
 
 interface LicenseYearRange {
   start: number
@@ -60,12 +61,18 @@ export async function licenseDate (log: Log, octokit: GraaOctokit, repo: RepoOfA
 
   log.info(`Should update from ${licenseYears.start}-${licenseYears.end} to ${newRange.start}-${newRange.end}`)
 
+  const existing = await searchExistingPr(octokit, repo, BRANCH_NAME)
+  if (existing != null) {
+    log.info(`A PR already exists for branch ${BRANCH_NAME}, see ${existing.webUrl}`)
+    return
+  }
+
   const pr = await createPrToUpdateFile(octokit, repo, {
     fileBlobSha: license.sha,
     path: LICENSE_PATH,
     content: updateRange(license.content, newRange)
   }, {
-    branch: 'chore/license-copyright-year',
+    branch: BRANCH_NAME,
     parentCommitSha: lastCommit.sha,
     subject: 'chore(license): Update copyright range',
     comment: `Note: This PR was created automatically by [GRAA](https://github.com/meyfa/graa).\n\nIt looks like the most recent commit is dated to the year ${commitYear}. This PR updates the copyright range in LICENSE to match that.`
