@@ -2,6 +2,8 @@ import { GraaOctokit, RepoOfAuthenticatedUser } from './types.js'
 import { tryReadFileAsUtf8 } from './content.js'
 import { array, Infer, object, optional, string, validate } from 'superstruct'
 import * as YAML from 'yaml'
+import { baseConfig } from '../configs/base.js'
+import { RepoConfigError } from './errors.js'
 
 const CONFIG_PATH = '.graa.yml'
 
@@ -14,6 +16,7 @@ const EMPTY_CONFIG: Config = {
 }
 
 const PartialConfigSchema = object({
+  extends: optional(string()),
   automations: optional(array(string()))
 })
 
@@ -29,10 +32,9 @@ async function readPartialConfig (octokit: GraaOctokit, repo: RepoOfAuthenticate
   if (configFile != null) {
     const asYaml = YAML.parse(configFile.content)
     const [error, config] = validate(asYaml, PartialConfigSchema, { coerce: true })
-    if (error != null || config == null) {
-      return undefined
+    if (error == null && config != null) {
+      return config
     }
-    return config
   }
 
   return undefined
@@ -49,12 +51,22 @@ function mergeConfig (base: Config, extend: PartialConfig): Config {
   return { ...base, automations }
 }
 
+function getBundledPartialConfig (repo: RepoOfAuthenticatedUser, name: string): PartialConfig {
+  if (name === 'config:base') {
+    return baseConfig
+  }
+  throw new RepoConfigError(repo, `Unknown config name '${name}'`)
+}
+
+function resolveConfig (repo: RepoOfAuthenticatedUser, partial: PartialConfig): Config {
+  const base = partial.extends != null
+    ? resolveConfig(repo, getBundledPartialConfig(repo, partial.extends))
+    : EMPTY_CONFIG
+
+  return mergeConfig(base, partial)
+}
+
 export async function getConfig (octokit: GraaOctokit, repo: RepoOfAuthenticatedUser): Promise<Config | undefined> {
   const partial = await readPartialConfig(octokit, repo)
-
-  if (partial != null) {
-    return mergeConfig(EMPTY_CONFIG, partial)
-  }
-
-  return undefined
+  return partial != null ? resolveConfig(repo, partial) : undefined
 }
