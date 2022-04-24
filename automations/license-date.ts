@@ -1,6 +1,7 @@
 import { tryReadFileAsUtf8 } from '../lib/content.js'
 import { GraaOctokit, RepoOfAuthenticatedUser } from '../lib/types.js'
 import { createPrToUpdateFile } from '../lib/pr.js'
+import { Log } from '../lib/log.js'
 
 const LICENSE_PATH = 'LICENSE'
 
@@ -12,21 +13,24 @@ interface LicenseYearRange {
 /**
  * Run a job for updating the year range in the 'LICENSE' file to include the year of the most recent commit.
  *
+ * @param log The scoped logger.
  * @param octokit The API instance.
  * @param repo The repo to run this action on.
  */
-export async function licenseDate (octokit: GraaOctokit, repo: RepoOfAuthenticatedUser): Promise<void> {
+export async function licenseDate (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser): Promise<void> {
   const license = await tryReadFileAsUtf8(octokit, {
     owner: repo.owner.login,
     repo: repo.name,
     path: LICENSE_PATH
   })
   if (license == null) {
+    log.info('Skipping (no license file found)')
     return
   }
 
   const licenseYears = extractRange(license.content)
   if (licenseYears == null) {
+    log.info('Skipping (unable to extract a date range from the license file)')
     return
   }
 
@@ -39,28 +43,35 @@ export async function licenseDate (octokit: GraaOctokit, repo: RepoOfAuthenticat
   const lastCommit = mainBranch.data.commit
   const lastCommitDate = lastCommit?.commit?.committer?.date
   if (lastCommitDate == null) {
+    log.info('Skipping (no commit found on default branch)')
     return
   }
 
   const commitYear = parseInt(lastCommitDate.slice(0, 4), 10)
-
-  if (licenseYears.end < commitYear) {
-    const newRange: LicenseYearRange = {
-      ...licenseYears,
-      end: commitYear
-    }
-
-    await createPrToUpdateFile(octokit, repo, {
-      fileBlobSha: license.sha,
-      path: LICENSE_PATH,
-      content: updateRange(license.content, newRange)
-    }, {
-      branch: 'chore/license-copyright-year',
-      parentCommitSha: lastCommit.sha,
-      subject: 'chore(license): Update copyright range',
-      comment: `Note: This PR was created automatically by [GRAA](https://github.com/meyfa/graa).\n\nIt looks like the most recent commit is dated to the year ${commitYear}. This PR updates the copyright range in LICENSE to match that.`
-    })
+  if (licenseYears.end >= commitYear) {
+    log.info('Already up to date')
+    return
   }
+
+  const newRange: LicenseYearRange = {
+    ...licenseYears,
+    end: commitYear
+  }
+
+  log.info(`Should update from ${licenseYears.start}-${licenseYears.end} to ${newRange.start}-${newRange.end}`)
+
+  const pr = await createPrToUpdateFile(octokit, repo, {
+    fileBlobSha: license.sha,
+    path: LICENSE_PATH,
+    content: updateRange(license.content, newRange)
+  }, {
+    branch: 'chore/license-copyright-year',
+    parentCommitSha: lastCommit.sha,
+    subject: 'chore(license): Update copyright range',
+    comment: `Note: This PR was created automatically by [GRAA](https://github.com/meyfa/graa).\n\nIt looks like the most recent commit is dated to the year ${commitYear}. This PR updates the copyright range in LICENSE to match that.`
+  })
+
+  log.info(`PR created, see ${pr.webUrl}`)
 }
 
 function extractRange (licenseText: string): LicenseYearRange | undefined {

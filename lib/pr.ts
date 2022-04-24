@@ -13,7 +13,11 @@ export interface PullRequestMetadata {
   comment: string
 }
 
-export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, change: FileChange, meta: PullRequestMetadata): Promise<void> {
+export interface PullRequestResult {
+  webUrl: string
+}
+
+export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, change: FileChange, meta: PullRequestMetadata): Promise<PullRequestResult> {
   await octokit.rest.git.createRef({
     owner: repo.owner.login,
     repo: repo.name,
@@ -31,7 +35,7 @@ export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoOfAu
     message: meta.subject
   })
 
-  await octokit.rest.pulls.create({
+  const pr = await octokit.rest.pulls.create({
     owner: repo.owner.login,
     repo: repo.name,
     title: meta.subject,
@@ -39,4 +43,8 @@ export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoOfAu
     head: meta.branch,
     base: repo.default_branch
   })
+
+  return {
+    webUrl: pr.data._links.html.href
+  }
 }
