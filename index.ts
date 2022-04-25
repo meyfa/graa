@@ -7,12 +7,14 @@ import { getConfig } from './lib/config.js'
 import { globalLog, Log, withRepoScope, withAutomationScope } from './lib/log.js'
 import { AuthError, RepoConfigError } from './lib/errors.js'
 import { reconfigure } from './automations/reconfigure.js'
+import { files } from './automations/files.js'
 
 type Automation = (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: object) => Promise<void>
 
 const AUTOMATIONS: ReadonlyMap<string, Automation> = new Map([
   ['license-date', licenseDate],
-  ['reconfigure', reconfigure]
+  ['reconfigure', reconfigure],
+  ['files', files]
 ])
 
 function ensureToken (): string {
