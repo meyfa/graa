@@ -74,7 +74,7 @@ async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automatio
   const scopedLog = withAutomationScope(log, automationId)
   scopedLog.info('Running')
 
-  await automation(log, octokit, repo)
+  await automation(scopedLog, octokit, repo)
 }
 
 try {
