@@ -7,7 +7,7 @@ import { getConfig } from './lib/config.js'
 import { globalLog, Log, withRepoScope, withAutomationScope } from './lib/log.js'
 import { AuthError, RepoConfigError } from './lib/errors.js'
 
-type Automation = (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser) => Promise<void>
+type Automation = (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: object) => Promise<void>
 
 const AUTOMATIONS: ReadonlyMap<string, Automation> = new Map([
   ['license-date', licenseDate]
@@ -60,12 +60,12 @@ async function handleRepo (log: Log, repo: RepoOfAuthenticatedUser): Promise<voi
   }
 
   log.info('Running')
-  for (const automationId of config.automations) {
-    await runAutomation(log, repo, automationId)
+  for (const [automationId, options] of Object.entries(config.automations)) {
+    await runAutomation(log, repo, automationId, options)
   }
 }
 
-async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automationId: string): Promise<void> {
+async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automationId: string, options: object): Promise<void> {
   const automation = AUTOMATIONS.get(automationId)
   if (automation == null) {
     throw new RepoConfigError(repo, `Unknown automation '${automationId}'!`)
@@ -74,7 +74,7 @@ async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automatio
   const scopedLog = withAutomationScope(log, automationId)
   scopedLog.info('Running')
 
-  await automation(scopedLog, octokit, repo)
+  await automation(scopedLog, octokit, repo, options)
 }
 
 try {

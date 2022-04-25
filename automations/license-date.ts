@@ -2,9 +2,13 @@ import { tryReadFileAsUtf8 } from '../lib/content.js'
 import { GraaOctokit, RepoOfAuthenticatedUser } from '../lib/types.js'
 import { createPrToUpdateFile, searchExistingPr } from '../lib/pr.js'
 import { Log } from '../lib/log.js'
+import { object } from 'superstruct'
+import { assertAutomationOptions } from '../lib/validation.js'
 
 const LICENSE_PATH = 'LICENSE'
 const BRANCH_NAME = 'chore/license-copyright-year'
+
+const Options = object({})
 
 interface LicenseYearRange {
   start: number
@@ -17,8 +21,11 @@ interface LicenseYearRange {
  * @param log The scoped logger.
  * @param octokit The API instance.
  * @param repo The repo to run this action on.
+ * @param options The automation options.
  */
-export async function licenseDate (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser): Promise<void> {
+export async function licenseDate (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: object): Promise<void> {
+  assertAutomationOptions(repo, Options, options)
+
   const license = await tryReadFileAsUtf8(octokit, {
     owner: repo.owner.login,
     repo: repo.name,

@@ -1,6 +1,6 @@
 import { GraaOctokit, RepoOfAuthenticatedUser } from './types.js'
 import { tryReadFileAsUtf8 } from './content.js'
-import { array, Infer, object, optional, string, validate } from 'superstruct'
+import { Infer, object, optional, record, string, validate } from 'superstruct'
 import * as YAML from 'yaml'
 import { baseConfig } from '../configs/base.js'
 import { RepoConfigError } from './errors.js'
@@ -8,16 +8,16 @@ import { RepoConfigError } from './errors.js'
 const CONFIG_PATH = '.graa.yml'
 
 export interface Config {
-  readonly automations: readonly string[]
+  readonly automations: Readonly<Record<string, object>>
 }
 
 const EMPTY_CONFIG: Config = {
-  automations: []
+  automations: {}
 }
 
 const PartialConfigSchema = object({
   extends: optional(string()),
-  automations: optional(array(string()))
+  automations: optional(record(string(), object()))
 })
 
 export type PartialConfig = Infer<typeof PartialConfigSchema>
@@ -41,11 +41,9 @@ async function readPartialConfig (octokit: GraaOctokit, repo: RepoOfAuthenticate
 }
 
 function mergeConfig (base: Config, extend: PartialConfig): Config {
-  const automations = [...base.automations]
-  for (const automation of extend.automations ?? []) {
-    if (!automations.includes(automation)) {
-      automations.push(automation)
-    }
+  const automations = { ...base.automations }
+  for (const [automationId, options] of Object.entries(extend.automations ?? {})) {
+    automations[automationId] = options
   }
 
   return { ...base, automations }
