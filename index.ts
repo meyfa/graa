@@ -2,20 +2,10 @@ import { Octokit } from '@octokit/core'
 import { paginateRest } from '@octokit/plugin-paginate-rest'
 import { restEndpointMethods } from '@octokit/plugin-rest-endpoint-methods'
 import { GraaOctokit, RepoOfAuthenticatedUser } from './lib/types.js'
-import { licenseDate } from './automations/license-date.js'
-import { getConfig } from './lib/config.js'
+import { getEffectiveConfig } from './lib/config.js'
 import { globalLog, Log, withRepoScope, withAutomationScope } from './lib/log.js'
 import { AuthError, RepoConfigError } from './lib/errors.js'
-import { reconfigure } from './automations/reconfigure.js'
-import { files } from './automations/files.js'
-
-type Automation = (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: object) => Promise<void>
-
-const AUTOMATIONS: ReadonlyMap<string, Automation> = new Map([
-  ['license-date', licenseDate],
-  ['reconfigure', reconfigure],
-  ['files', files]
-])
+import { getAutomation } from './lib/automation.js'
 
 function ensureToken (): string {
   const token = process.env.GRAA_TOKEN
@@ -57,7 +47,7 @@ async function handleRepo (log: Log, repo: RepoOfAuthenticatedUser): Promise<voi
     return
   }
 
-  const config = await getConfig(octokit, repo)
+  const config = await getEffectiveConfig(octokit, repo)
   if (config == null) {
     log.info('Skipping (not configured)')
     return
@@ -65,12 +55,14 @@ async function handleRepo (log: Log, repo: RepoOfAuthenticatedUser): Promise<voi
 
   log.info('Running')
   for (const [automationId, options] of Object.entries(config.automations)) {
+    // At this point, the options object is guaranteed to match the required struct.
+    // This is accomplished as part of the config resolution process.
     await runAutomation(log, repo, automationId, options)
   }
 }
 
 async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automationId: string, options: object): Promise<void> {
-  const automation = AUTOMATIONS.get(automationId)
+  const automation = getAutomation(automationId)
   if (automation == null) {
     throw new RepoConfigError(repo, `Unknown automation '${automationId}'!`)
   }
@@ -78,7 +70,7 @@ async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automatio
   const scopedLog = withAutomationScope(log, automationId)
   scopedLog.info('Running')
 
-  await automation(scopedLog, octokit, repo, options)
+  await automation.run(scopedLog, octokit, repo, options)
 }
 
 try {

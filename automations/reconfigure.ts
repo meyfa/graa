@@ -1,28 +1,27 @@
-import { Log } from '../lib/log.js'
-import { GraaOctokit, RepoOfAuthenticatedUser } from '../lib/types.js'
-import { boolean, defaulted, object } from 'superstruct'
-import { assertAutomationOptions } from '../lib/validation.js'
+import { Automation } from '../lib/automation.js'
+import { boolean, defaulted, Infer, object } from 'superstruct'
 
 const Options = object({
   'delete-branch-on-merge': defaulted(boolean(), false)
 })
 
 /**
- * Run a job for reconfiguring a subset of the repository settings.
- *
- * @param log The scoped logger.
- * @param octokit The API instance.
- * @param repo The repo to run this action on.
- * @param options The automation options.
+ * An automation for reconfiguring a subset of the repository settings.
  */
-export async function reconfigure (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: object): Promise<void> {
-  const opt = assertAutomationOptions(repo, Options, options)
+export const reconfigure: Automation<Infer<typeof Options>> = {
+  optionsStruct: Options,
 
-  await octokit.rest.repos.update({
-    owner: repo.owner.login,
-    repo: repo.name,
+  combineOptions (base, extend) {
+    return { ...base, ...extend }
+  },
 
-    // sample setting
-    delete_branch_on_merge: opt['delete-branch-on-merge']
-  })
+  async run (log, octokit, repo, options) {
+    await octokit.rest.repos.update({
+      owner: repo.owner.login,
+      repo: repo.name,
+
+      // sample setting
+      delete_branch_on_merge: options['delete-branch-on-merge']
+    })
+  }
 }
