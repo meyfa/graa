@@ -2,8 +2,10 @@ import { GraaOctokit, RepoOfAuthenticatedUser } from './types.js'
 import { tryReadFileAsUtf8 } from './content.js'
 import { Infer, object, optional, record, string, validate } from 'superstruct'
 import * as YAML from 'yaml'
-import { baseConfig } from '../configs/base.js'
 import { RepoConfigError } from './errors.js'
+import { baseConfig } from '../configs/base.js'
+import { jsLibConfig } from '../configs/js-lib.js'
+import { jsAppConfig } from '../configs/js-app.js'
 
 const CONFIG_PATH = '.graa.yml'
 
@@ -50,8 +52,13 @@ function mergeConfig (base: Config, extend: PartialConfig): Config {
 }
 
 function getBundledPartialConfig (repo: RepoOfAuthenticatedUser, name: string): PartialConfig {
-  if (name === 'config:base') {
-    return baseConfig
+  switch (name) {
+    case 'config:base':
+      return baseConfig
+    case 'config:js-app':
+      return jsAppConfig
+    case 'config:js-lib':
+      return jsLibConfig
   }
   throw new RepoConfigError(repo, `Unknown config name '${name}'`)
 }

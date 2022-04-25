@@ -2,7 +2,7 @@ import { PartialConfig } from '../lib/config.js'
 
 const renovateJson = `{
   "extends": [
-    "config:base"
+    "config:js-lib"
   ],
   "labels": ["dependencies"],
   "packageRules": [
@@ -14,12 +14,9 @@ const renovateJson = `{
 }
 `
 
-export const baseConfig: PartialConfig = {
+export const jsLibConfig: PartialConfig = {
+  extends: 'config:base',
   automations: {
-    reconfigure: {
-      'delete-branch-on-merge': true
-    },
-    'license-date': {},
     files: {
       'renovate.json': renovateJson
     }
