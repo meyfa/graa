@@ -55,7 +55,7 @@ async function handleFile (log: Log, octokit: GraaOctokit, repo: RepoOfAuthentic
   }, {
     branch,
     parentCommitSha: mainBranch.data.commit.sha,
-    subject: `chore: Update ${path}`,
+    subject: `chore: ${current == null ? 'Create' : 'Update'} ${path}`,
     comment: 'The file content currently does not match the configured expected value, which is fixed through this PR.'
   })
 
