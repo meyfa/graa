@@ -18,7 +18,7 @@ const Options = object({
 export async function reconfigure (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: object): Promise<void> {
   const opt = assertAutomationOptions(repo, Options, options)
 
-  octokit.rest.repos.update({
+  await octokit.rest.repos.update({
     owner: repo.owner.login,
     repo: repo.name,
 
