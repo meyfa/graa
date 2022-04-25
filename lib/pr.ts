@@ -1,7 +1,7 @@
 import { GraaOctokit, RepoOfAuthenticatedUser } from './types.js'
 
 export interface FileChange {
-  fileBlobSha: string
+  fileBlobSha?: string
   path: string
   content: string
 }
@@ -57,7 +57,7 @@ export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoOfAu
     owner: repo.owner.login,
     repo: repo.name,
     title: meta.subject,
-    body: meta.comment,
+    body: `Note: This PR was created automatically by [GRAA](https://github.com/meyfa/graa).\n\n${meta.comment}`,
     head: meta.branch,
     base: repo.default_branch
   })

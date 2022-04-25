@@ -82,7 +82,7 @@ export async function licenseDate (log: Log, octokit: GraaOctokit, repo: RepoOfA
     branch: BRANCH_NAME,
     parentCommitSha: lastCommit.sha,
     subject: 'chore(license): Update copyright range',
-    comment: `Note: This PR was created automatically by [GRAA](https://github.com/meyfa/graa).\n\nIt looks like the most recent commit is dated to the year ${commitYear}. This PR updates the copyright range in LICENSE to match that.`
+    comment: `It looks like the most recent commit is dated to the year ${commitYear}. This PR updates the copyright range in LICENSE to match that.`
   })
 
   log.info(`PR created, see ${pr.webUrl}`)
