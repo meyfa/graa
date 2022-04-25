@@ -48,7 +48,7 @@ async function handleFile (log: Log, octokit: GraaOctokit, repo: RepoOfAuthentic
     return
   }
 
-  await createPrToUpdateFile(octokit, repo, {
+  const pr = await createPrToUpdateFile(octokit, repo, {
     path,
     fileBlobSha: current?.sha,
     content: expectedContent
@@ -58,6 +58,8 @@ async function handleFile (log: Log, octokit: GraaOctokit, repo: RepoOfAuthentic
     subject: `chore: Update ${path}`,
     comment: 'The file content currently does not match the configured expected value, which is fixed through this PR.'
   })
+
+  log.info(`PR created, see ${pr.webUrl}`)
 }
 
 /**
