@@ -1,4 +1,4 @@
-import { PartialConfig } from '../lib/config.js'
+import { PartialConfig } from '../config.js'
 
 const renovateJson = `{
   "extends": [

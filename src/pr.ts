@@ -1,4 +1,4 @@
-import { GraaOctokit, RepoOfAuthenticatedUser } from './types.js'
+import { GraaOctokit, RepoOfAuthenticatedUser } from './github/types.js'
 
 export interface FileChange {
   fileBlobSha?: string

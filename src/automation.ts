@@ -1,7 +1,7 @@
-import { GraaOctokit, RepoOfAuthenticatedUser } from './types.js'
-import { licenseDate } from '../automations/license-date.js'
-import { reconfigure } from '../automations/reconfigure.js'
-import { files } from '../automations/files.js'
+import { GraaOctokit, RepoOfAuthenticatedUser } from './github/types.js'
+import { licenseDate } from './automations/license-date.js'
+import { reconfigure } from './automations/reconfigure.js'
+import { files } from './automations/files.js'
 import { Struct } from 'superstruct'
 import { Log } from './log.js'
 

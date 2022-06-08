@@ -1,5 +1,5 @@
 import { Struct } from 'superstruct'
-import { RepoOfAuthenticatedUser } from './types.js'
+import { RepoOfAuthenticatedUser } from './github/types.js'
 import { RepoConfigError } from './errors.js'
 
 export function assertAutomationOptions<T> (repo: RepoOfAuthenticatedUser, struct: Struct<T>, options: unknown): T {

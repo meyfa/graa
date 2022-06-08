@@ -1,6 +1,6 @@
-import { Automation } from '../lib/automation.js'
-import { tryReadFileAsUtf8 } from '../lib/content.js'
-import { createPrToUpdateFile, searchExistingPr } from '../lib/pr.js'
+import { Automation } from '../automation.js'
+import { tryReadFileAsUtf8 } from '../github/content.js'
+import { createPrToUpdateFile, searchExistingPr } from '../pr.js'
 import { Infer, object } from 'superstruct'
 
 const LICENSE_PATH = 'LICENSE'

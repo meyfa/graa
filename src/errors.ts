@@ -1,4 +1,4 @@
-import { RepoOfAuthenticatedUser } from './types.js'
+import { RepoOfAuthenticatedUser } from './github/types.js'
 
 export class AuthError extends Error {
   constructor (message: string) {
