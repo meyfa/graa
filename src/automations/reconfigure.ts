@@ -1,4 +1,4 @@
-import { Automation } from '../lib/automation.js'
+import { Automation } from '../automation.js'
 import { boolean, defaulted, Infer, object } from 'superstruct'
 
 const Options = object({

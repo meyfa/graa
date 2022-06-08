@@ -1,11 +1,11 @@
 import { Octokit } from '@octokit/core'
 import { paginateRest } from '@octokit/plugin-paginate-rest'
 import { restEndpointMethods } from '@octokit/plugin-rest-endpoint-methods'
-import { GraaOctokit, RepoOfAuthenticatedUser } from './lib/types.js'
-import { getEffectiveConfig } from './lib/config.js'
-import { globalLog, Log, withRepoScope, withAutomationScope } from './lib/log.js'
-import { AuthError, RepoConfigError } from './lib/errors.js'
-import { getAutomation } from './lib/automation.js'
+import { GraaOctokit, RepoOfAuthenticatedUser } from './github/types.js'
+import { getEffectiveConfig } from './config.js'
+import { globalLog, Log, withRepoScope, withAutomationScope } from './log.js'
+import { AuthError, RepoConfigError } from './errors.js'
+import { getAutomation } from './automation.js'
 
 function ensureToken (): string {
   const token = process.env.GRAA_TOKEN

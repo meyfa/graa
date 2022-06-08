@@ -1,9 +1,9 @@
-import { Automation } from '../lib/automation.js'
-import { Log } from '../lib/log.js'
-import { GraaOctokit, RepoOfAuthenticatedUser } from '../lib/types.js'
+import { Automation } from '../automation.js'
+import { Log } from '../log.js'
+import { GraaOctokit, RepoOfAuthenticatedUser } from '../github/types.js'
 import { Infer, record, string } from 'superstruct'
-import { tryReadFileAsUtf8 } from '../lib/content.js'
-import { createPrToUpdateFile, searchExistingPr } from '../lib/pr.js'
+import { tryReadFileAsUtf8 } from '../github/content.js'
+import { createPrToUpdateFile, searchExistingPr } from '../pr.js'
 
 const Options = record(string(), string())
 
