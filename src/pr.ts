@@ -1,4 +1,4 @@
-import { GraaOctokit, RepoOfAuthenticatedUser } from './github/types.js'
+import { GraaOctokit, RepoDetail } from './github/types.js'
 
 export interface FileChange {
   fileBlobSha?: string
@@ -17,7 +17,7 @@ export interface PullRequestResult {
   webUrl: string
 }
 
-export async function searchExistingPr (octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, branch: string): Promise<PullRequestResult | undefined> {
+export async function searchExistingPr (octokit: GraaOctokit, repo: RepoDetail, branch: string): Promise<PullRequestResult | undefined> {
   const options = {
     q: `repo:${repo.full_name} is:pr is:open head:${branch}`
   } as const
@@ -35,7 +35,7 @@ export async function searchExistingPr (octokit: GraaOctokit, repo: RepoOfAuthen
   return undefined
 }
 
-export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, change: FileChange, meta: PullRequestMetadata): Promise<PullRequestResult> {
+export async function createPrToUpdateFile (octokit: GraaOctokit, repo: RepoDetail, change: FileChange, meta: PullRequestMetadata): Promise<PullRequestResult> {
   await octokit.rest.git.createRef({
     owner: repo.owner.login,
     repo: repo.name,
