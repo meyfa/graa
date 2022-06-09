@@ -10,4 +10,5 @@ export type GraaOctokit = InstanceType<typeof Octokit & Constructor<Api> & Const
 type RestMethods = GraaOctokit['rest']
 
 export type RepoOfAuthenticatedUser = GetResponseDataTypeFromEndpointMethod<RestMethods['repos']['listForAuthenticatedUser']>[number]
+export type RepoDetail = GetResponseDataTypeFromEndpointMethod<RestMethods['repos']['get']>
 export type BranchOfRepo = GetResponseDataTypeFromEndpointMethod<RestMethods['repos']['getBranch']>

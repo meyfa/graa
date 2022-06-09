@@ -1,6 +1,6 @@
 import { Automation } from '../automation.js'
 import { Log } from '../log.js'
-import { GraaOctokit, RepoOfAuthenticatedUser } from '../github/types.js'
+import { GraaOctokit, RepoDetail } from '../github/types.js'
 import { Infer, record, string } from 'superstruct'
 import { tryReadFileAsUtf8 } from '../github/content.js'
 import { createPrToUpdateFile, searchExistingPr } from '../pr.js'
@@ -16,7 +16,7 @@ function pathToBranchName (path: string): string {
   return `chore/update-${normalized}`
 }
 
-async function handleFile (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, path: string, expectedContent: string): Promise<void> {
+async function handleFile (log: Log, octokit: GraaOctokit, repo: RepoDetail, path: string, expectedContent: string): Promise<void> {
   const mainBranch = await octokit.rest.repos.getBranch({
     owner: repo.owner.login,
     repo: repo.name,

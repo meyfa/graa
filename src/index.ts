@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/core'
 import { paginateRest } from '@octokit/plugin-paginate-rest'
 import { restEndpointMethods } from '@octokit/plugin-rest-endpoint-methods'
-import { GraaOctokit, RepoOfAuthenticatedUser } from './github/types.js'
+import { GraaOctokit, RepoDetail, RepoOfAuthenticatedUser } from './github/types.js'
 import { getEffectiveConfig } from './config.js'
 import { globalLog, Log, withRepoScope, withAutomationScope } from './log.js'
 import { AuthError, RepoConfigError } from './errors.js'
@@ -54,14 +54,22 @@ async function handleRepo (log: Log, repo: RepoOfAuthenticatedUser): Promise<voi
   }
 
   log.info('Running')
+
+  // Listing does not include all relevant data, so we need to fetch the repo again separately.
+  // For example, the following property is only present on the GET response: delete_branch_on_merge
+  const repoGet = await octokit.rest.repos.get({
+    owner: repo.owner.login,
+    repo: repo.name
+  })
+
   for (const [automationId, options] of Object.entries(config.automations)) {
     // At this point, the options object is guaranteed to match the required struct.
     // This is accomplished as part of the config resolution process.
-    await runAutomation(log, repo, automationId, options)
+    await runAutomation(log, repoGet.data, automationId, options)
   }
 }
 
-async function runAutomation (log: Log, repo: RepoOfAuthenticatedUser, automationId: string, options: object): Promise<void> {
+async function runAutomation (log: Log, repo: RepoDetail, automationId: string, options: object): Promise<void> {
   const automation = getAutomation(automationId)
   if (automation == null) {
     throw new RepoConfigError(repo, `Unknown automation '${automationId}'!`)

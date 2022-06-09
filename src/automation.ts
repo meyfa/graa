@@ -1,4 +1,4 @@
-import { GraaOctokit, RepoOfAuthenticatedUser } from './github/types.js'
+import { GraaOctokit, RepoDetail } from './github/types.js'
 import { licenseDate } from './automations/license-date.js'
 import { reconfigure } from './automations/reconfigure.js'
 import { files } from './automations/files.js'
@@ -31,7 +31,7 @@ export interface Automation<Opt> {
    * @param repo The repo for which to run the automation.
    * @param options The fully resolved and validated options.
    */
-  run: (log: Log, octokit: GraaOctokit, repo: RepoOfAuthenticatedUser, options: Opt) => Promise<void>
+  run: (log: Log, octokit: GraaOctokit, repo: RepoDetail, options: Opt) => Promise<void>
 }
 
 const AUTOMATIONS: ReadonlyMap<string, Automation<any>> = new Map<string, Automation<any>>([
