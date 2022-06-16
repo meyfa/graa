@@ -7,12 +7,6 @@
     {
       "matchDepTypes": ["devDependencies"],
       "extends": ["schedule:weekly"]
-    },
-    {
-      "matchPackagePatterns": [
-        "^@octokit/"
-      ],
-      "groupName": "octokit packages"
     }
   ]
 }
