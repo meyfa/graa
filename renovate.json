@@ -14,5 +14,8 @@
       ],
       "groupName": "octokit packages"
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
