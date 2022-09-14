@@ -10,7 +10,10 @@ const renovateJson = `{
       "matchDepTypes": ["devDependencies"],
       "extends": ["schedule:weekly"]
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
 `
 
