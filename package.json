@@ -28,7 +28,7 @@
     "@octokit/plugin-paginate-rest": "4.3.0",
     "@octokit/plugin-rest-endpoint-methods": "6.6.1",
     "@octokit/types": "7.5.0",
-    "superstruct": "0.16.0",
+    "superstruct": "0.16.1",
     "yaml": "2.1.1"
   }
 }
