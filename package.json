@@ -29,6 +29,6 @@
     "@octokit/plugin-rest-endpoint-methods": "6.6.2",
     "@octokit/types": "7.5.1",
     "superstruct": "0.16.5",
-    "yaml": "2.1.2"
+    "yaml": "2.1.3"
   }
 }
