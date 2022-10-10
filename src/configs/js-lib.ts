@@ -1,4 +1,6 @@
 import { PartialConfig } from '../config.js'
+import { commonRenovatePackageRules } from './base.js'
+import { indent } from '../util/indent.js'
 
 const renovateJson = `{
   "extends": [
@@ -9,7 +11,8 @@ const renovateJson = `{
     {
       "matchDepTypes": ["devDependencies"],
       "extends": ["schedule:weekly"]
-    }
+    },
+    ${indent(commonRenovatePackageRules, '    ')}
   ]
 }
 `
