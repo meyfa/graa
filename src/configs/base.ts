@@ -1,4 +1,22 @@
 import { PartialConfig } from '../config.js'
+import { indent } from '../util/indent.js'
+
+export const commonRenovatePackageRules = `{
+  "matchDepTypes": ["devDependencies"],
+  "matchUpdateTypes": ["minor", "patch", "lockFileMaintenance"],
+  "matchPackageNames": [
+    "typescript",
+    "eslint",
+    "stylelint",
+    "stylelint-config-standard",
+    "@meyfa/eslint-config"
+  ],
+  "automerge": true
+},
+{
+  "matchPackagePatterns": ["^@octokit/"],
+  "groupName": "octokit packages"
+}`
 
 const renovateJson = `{
   "extends": [
@@ -9,7 +27,8 @@ const renovateJson = `{
     {
       "matchDepTypes": ["devDependencies"],
       "extends": ["schedule:weekly"]
-    }
+    },
+    ${indent(commonRenovatePackageRules, '    ')}
   ]
 }
 `
