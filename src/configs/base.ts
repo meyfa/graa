@@ -7,6 +7,8 @@ export const commonRenovatePackageRules = `{
   "matchPackageNames": [
     "typescript",
     "eslint",
+    "mocha",
+    "chai",
     "stylelint",
     "stylelint-config-standard",
     "@meyfa/eslint-config"
