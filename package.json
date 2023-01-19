@@ -17,7 +17,7 @@
     "lint-fix": "tsc --noEmit && eslint --fix --ignore-path .gitignore ."
   },
   "devDependencies": {
-    "@meyfa/eslint-config": "2.1.2",
+    "@meyfa/eslint-config": "3.0.0",
     "@types/node": "18.11.17",
     "eslint": "8.30.0",
     "rimraf": "3.0.2",
