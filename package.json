@@ -19,7 +19,7 @@
   "devDependencies": {
     "@meyfa/eslint-config": "3.0.0",
     "@types/node": "18.11.17",
-    "eslint": "8.30.0",
+    "eslint": "8.32.0",
     "rimraf": "3.0.2",
     "typescript": "4.9.4"
   },
