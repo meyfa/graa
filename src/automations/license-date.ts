@@ -53,7 +53,7 @@ export const licenseDate: Automation<Infer<typeof Options>> = {
       return
     }
 
-    const commitYear = parseInt(lastCommitDate.slice(0, 4), 10)
+    const commitYear = Number.parseInt(lastCommitDate.slice(0, 4), 10)
     if (licenseYears.end >= commitYear) {
       log.info('Already up to date')
       return
@@ -99,8 +99,8 @@ function extractRange (licenseText: string): LicenseYearRange | undefined {
     return undefined
   }
 
-  const start = parseInt(match[1], 10)
-  const end = match[2]?.length > 0 ? parseInt(match[2], 10) : start
+  const start = Number.parseInt(match[1], 10)
+  const end = match[2]?.length > 0 ? Number.parseInt(match[2], 10) : start
 
   return { start, end }
 }
