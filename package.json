@@ -17,7 +17,7 @@
     "lint-fix": "tsc --noEmit && eslint --fix --ignore-path .gitignore ."
   },
   "devDependencies": {
-    "@meyfa/eslint-config": "5.0.0",
+    "@meyfa/eslint-config": "5.1.0",
     "@types/node": "20.11.27",
     "eslint": "8.57.0",
     "typescript": "5.4.2"
