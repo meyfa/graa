@@ -3,6 +3,20 @@ import { indent } from '../util/indent.js'
 
 export const commonRenovatePackageRules = `{
   "matchDepTypes": ["devDependencies"],
+  "extends": ["schedule:weekly"]
+},
+{
+  "matchDepTypes": ["devDependencies"],
+  "matchUpdateTypes": ["minor", "patch"],
+  "excludePackagePatterns": [
+    "^@types/",
+    "-types$"
+  ],
+  "groupName": "dev dependencies (non-major)",
+  "groupSlug": "dev-dependencies-non-major"
+},
+{
+  "matchDepTypes": ["devDependencies"],
   "matchUpdateTypes": ["minor", "patch", "lockFileMaintenance"],
   "matchPackageNames": [
     "typescript",
@@ -22,14 +36,10 @@ export const commonRenovatePackageRules = `{
 
 const renovateJson = `{
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "labels": ["dependencies"],
   "packageRules": [
-    {
-      "matchDepTypes": ["devDependencies"],
-      "extends": ["schedule:weekly"]
-    },
     ${indent(commonRenovatePackageRules, '    ')}
   ]
 }

@@ -8,10 +8,6 @@ const renovateJson = `{
   ],
   "labels": ["dependencies"],
   "packageRules": [
-    {
-      "matchDepTypes": ["devDependencies"],
-      "extends": ["schedule:weekly"]
-    },
     ${indent(commonRenovatePackageRules, '    ')}
   ],
   "lockFileMaintenance": {
