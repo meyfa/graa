@@ -9,9 +9,17 @@
       "extends": ["schedule:weekly"]
     },
     {
-      "matchPackagePatterns": [
-        "^@octokit/"
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "excludePackagePatterns": [
+        "^@types/",
+        "-types$"
       ],
+      "groupName": "dev dependencies (non-major)",
+      "groupSlug": "dev-dependencies-non-major"
+    },
+    {
+      "matchPackagePatterns": ["^@octokit/"],
       "groupName": "octokit packages"
     }
   ],
