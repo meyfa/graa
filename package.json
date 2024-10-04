@@ -24,9 +24,9 @@
   },
   "dependencies": {
     "@octokit/core": "6.1.2",
-    "@octokit/plugin-paginate-rest": "11.3.3",
-    "@octokit/plugin-rest-endpoint-methods": "13.2.4",
-    "@octokit/types": "13.5.0",
+    "@octokit/plugin-paginate-rest": "11.3.5",
+    "@octokit/plugin-rest-endpoint-methods": "13.2.6",
+    "@octokit/types": "13.6.1",
     "superstruct": "2.0.2",
     "yaml": "2.5.1"
   }
