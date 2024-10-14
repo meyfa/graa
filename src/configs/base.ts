@@ -8,10 +8,6 @@ export const commonRenovatePackageRules = `{
 {
   "matchDepTypes": ["devDependencies"],
   "matchUpdateTypes": ["minor", "patch"],
-  "excludePackagePatterns": [
-    "^@types/",
-    "-types$"
-  ],
   "groupName": "dev dependencies (non-major)",
   "groupSlug": "dev-dependencies-non-major"
 },
