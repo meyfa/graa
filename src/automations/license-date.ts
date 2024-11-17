@@ -47,7 +47,7 @@ export const licenseDate: Automation<Infer<typeof Options>> = {
     })
 
     const lastCommit = mainBranch.data.commit
-    const lastCommitDate = lastCommit?.commit?.committer?.date
+    const lastCommitDate = lastCommit.commit.committer?.date
     if (lastCommitDate == null) {
       log.info('Skipping (no commit found on default branch)')
       return
@@ -94,13 +94,13 @@ function extractRange (licenseText: string): LicenseYearRange | undefined {
   }
 
   // uncaptured prefix + range start + optional range end + uncaptured suffix
-  const match = licenseText.match(/^Copyright \(c\) (\d{4})(?: - (\d{4}))? .+$/m)
+  const match = /^Copyright \(c\) (\d{4})(?: - (\d{4}))? .+$/m.exec(licenseText)
   if (match == null) {
     return undefined
   }
 
   const start = Number.parseInt(match[1], 10)
-  const end = match[2]?.length > 0 ? Number.parseInt(match[2], 10) : start
+  const end = (match.at(2) ?? '').length > 0 ? Number.parseInt(match[2], 10) : start
 
   return { start, end }
 }
