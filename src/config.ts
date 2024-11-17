@@ -36,7 +36,7 @@ async function readPartialConfig (octokit: GraaOctokit, repo: RepoOfAuthenticate
   if (configFile != null) {
     const asYaml = YAML.parse(configFile.content)
     const [error, config] = validate(asYaml, PartialConfigSchema, { coerce: true })
-    if (error == null && config != null) {
+    if (error == null) {
       return config
     }
   }
@@ -53,6 +53,7 @@ function mergeConfig (repo: RepoOfAuthenticatedUser, base: Config, extend: Parti
     }
     const validatedOptions = assertAutomationOptions(repo, automation.optionsStruct, options)
     // not yet configured -> options are completely new
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (automations[automationId] == null) {
       automations[automationId] = validatedOptions
       continue

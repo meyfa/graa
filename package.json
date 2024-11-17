@@ -13,13 +13,13 @@
     "clean": "node -e \"fs.rmSync('./dist',{force:true,recursive:true})\"",
     "build": "npm run clean && tsc",
     "start": "node dist/index.js",
-    "lint": "tsc --noEmit && eslint --ignore-path .gitignore .",
-    "lint-fix": "tsc --noEmit && eslint --fix --ignore-path .gitignore ."
+    "lint": "tsc --noEmit && eslint .",
+    "lint-fix": "tsc --noEmit && eslint --fix ."
   },
   "devDependencies": {
-    "@meyfa/eslint-config": "7.0.0",
+    "@meyfa/eslint-config": "8.0.0",
     "@types/node": "22.9.0",
-    "eslint": "8.57.1",
+    "eslint": "9.14.0",
     "typescript": "5.6.3"
   },
   "dependencies": {
