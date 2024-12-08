@@ -26,7 +26,7 @@ export const commonRenovatePackageRules = `{
   "automerge": true
 },
 {
-  "matchPackagePatterns": ["^@octokit/"],
+  "matchPackageNames": ["/^@octokit//"],
   "groupName": "octokit packages"
 }`
 
