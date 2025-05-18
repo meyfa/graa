@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "@meyfa/eslint-config": "8.0.1",
-    "@types/node": "22.14.1",
-    "eslint": "9.24.0",
+    "@types/node": "22.15.18",
+    "eslint": "9.27.0",
     "typescript": "5.8.3"
   },
   "dependencies": {
