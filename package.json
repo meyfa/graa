@@ -17,7 +17,7 @@
     "lint-fix": "tsc --noEmit && eslint --fix ."
   },
   "devDependencies": {
-    "@meyfa/eslint-config": "8.0.1",
+    "@meyfa/eslint-config": "9.0.0",
     "@types/node": "22.19.0",
     "eslint": "9.39.1",
     "typescript": "5.9.3"
