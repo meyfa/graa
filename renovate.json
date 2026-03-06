@@ -29,7 +29,12 @@
       "automerge": true
     },
     {
-      "matchPackagePatterns": ["^@octokit/"],
+      "matchManagers": ["github-actions"],
+      "matchDepTypes": ["action"],
+      "groupName": "actions"
+    },
+    {
+      "matchPackageNames": ["/^@octokit//"],
       "groupName": "octokit packages"
     }
   ],
