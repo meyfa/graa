@@ -26,6 +26,11 @@ export const commonRenovatePackageRules = `{
   "automerge": true
 },
 {
+  "matchManagers": ["github-actions"],
+  "matchDepTypes": ["action"],
+  "groupName": "actions"
+},
+{
   "matchPackageNames": ["/^@octokit//"],
   "groupName": "octokit packages"
 }`
