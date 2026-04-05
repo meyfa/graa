@@ -12,6 +12,7 @@ const renovateJson = `{
   ],
   "lockFileMaintenance": {
     "enabled": true,
+    "extends": ["schedule:monthly"],
     "automerge": true
   }
 }
