@@ -3,7 +3,7 @@ import { indent } from '../util/indent.js'
 
 export const commonRenovatePackageRules = `{
   "matchDepTypes": ["devDependencies"],
-  "extends": ["schedule:weekly"]
+  "extends": ["schedule:monthly"]
 },
 {
   "matchDepTypes": ["devDependencies"],
@@ -12,27 +12,9 @@ export const commonRenovatePackageRules = `{
   "groupSlug": "dev-dependencies-non-major"
 },
 {
-  "matchDepTypes": ["devDependencies"],
-  "matchUpdateTypes": ["minor", "patch", "lockFileMaintenance"],
-  "matchPackageNames": [
-    "typescript",
-    "eslint",
-    "mocha",
-    "chai",
-    "stylelint",
-    "stylelint-config-standard",
-    "@meyfa/eslint-config"
-  ],
-  "automerge": true
-},
-{
   "matchManagers": ["github-actions"],
   "matchDepTypes": ["action"],
   "groupName": "actions"
-},
-{
-  "matchPackageNames": ["/^@octokit//"],
-  "groupName": "octokit packages"
 }`
 
 const renovateJson = `{
