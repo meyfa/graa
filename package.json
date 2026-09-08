@@ -23,7 +23,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@octokit/core": "7.0.6",
+    "@octokit/core": "7.0.8",
     "@octokit/plugin-paginate-rest": "15.0.0",
     "@octokit/plugin-rest-endpoint-methods": "18.0.0",
     "@octokit/types": "18.0.0",
