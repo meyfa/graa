@@ -15,6 +15,11 @@ export const commonRenovatePackageRules = `{
   "matchManagers": ["github-actions"],
   "matchDepTypes": ["action"],
   "groupName": "actions"
+},
+{
+  "matchManagers": ["devcontainer"],
+  "matchDepTypes": ["image"],
+  "commitMessageTopic": "devcontainer image"
 }`
 
 const renovateJson = `{
