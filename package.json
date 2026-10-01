@@ -20,7 +20,7 @@
     "@meyfa/eslint-config": "9.0.0",
     "@types/node": "24.13.3",
     "eslint": "9.39.5",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   },
   "dependencies": {
     "@octokit/core": "7.0.6",
